@@ -1,0 +1,10 @@
+.main-link {
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  transition: opacity 1s linear;
+}
+
+.main-link:hover {
+  opacity: 0.5;
+}

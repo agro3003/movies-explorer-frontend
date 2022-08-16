@@ -1,0 +1,51 @@
+.switch {
+  display: flex;
+}
+
+.switch__slider {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: #343434;;
+  transition: 0.5s;
+}
+
+.switch__slider:before {
+  position: absolute;
+  left: 1px;
+  top: 2px;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 9px;
+  background-color: #A0A0A0;
+  transition: 0.5s;
+}
+
+.switch__default {
+  display: none;
+}
+
+.switch__default:checked + .switch__slider:before {
+  transform: translateX(16px);
+}
+
+.switch__default:checked + .switch__slider {
+  background-color: #2BE080;
+}
+
+.switch__default:checked + .switch__slider:before {
+  background-color: #ffffff;
+}
+
+.switch__label {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  margin-left: 14px;
+}
