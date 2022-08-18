@@ -1,0 +1,12 @@
+.app {
+  font-family: "Inter", "Arial", sans-serif;
+  color: #000000;
+  margin: 0 auto;
+  max-width: 1280px;
+  min-width: 320px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
