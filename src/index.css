@@ -1,8 +1,0 @@
-@import url(./vendor/normalize.css);
-@import url(./vendor/fonts/font.css);
-
-#root {
-  font-family: "Inter", "Arial", sans-serif;
-  color: #000000;
-  background-color: #FFFFFF;
-}
