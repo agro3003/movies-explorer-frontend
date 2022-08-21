@@ -12,6 +12,16 @@
   color: #A0A0A0;
 }
 
+.portfolio__links {
+  list-style: none;
+  padding: 0;
+}
+
+.portfolio__links-item {
+  padding: 20px 0 19px;
+}
+
+
 .portfolio__link {
   display: flex;
   justify-content: space-between;
@@ -21,7 +31,7 @@
   line-height: 50px;
   letter-spacing: -0.04em;
   color: #000000;
-  padding: 20px 0 19px;
+
   cursor: pointer;
   transition: opacity 1s linear;
 }
@@ -30,16 +40,16 @@
   opacity: 0.5; 
 }
 
-.portfolio__link:first-of-type {
+.portfolio__links-item:first-of-type {
   padding-top: 0;
 }
 
-.portfolio__link:nth-of-type(2n) {
+.portfolio__links-item:nth-of-type(2n) {
   border-top: 1px solid #E8E8E8;
   border-bottom: 1px solid #E8E8E8;
 }
 
-.portfolio__link:last-of-type {
+.portfolio__links-item:last-of-type {
   padding-bottom: 0;
 }
 

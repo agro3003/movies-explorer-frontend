@@ -39,7 +39,7 @@
 
 .techs__items {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 90px);
+  grid-template-columns: repeat(7, 90px);
   justify-content: center;
   column-gap: 10px;
   row-gap: 10px;

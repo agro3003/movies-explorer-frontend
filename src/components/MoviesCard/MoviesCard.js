@@ -2,14 +2,11 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom';
 import card1 from '../../images/card1.png';
 import './MoviesCard.css';
-import disabledSaved from '../../images/disabled-saved.svg';
-import activeSaved from '../../images/active-saved.svg';
-import deleteImg from '../../images/delete-card.svg';
 
 export default function MoviesCard(props) {
-  const [saved, setSaved] = React.useState(disabledSaved);
+  const [saved, setSaved] = React.useState(false);
   const changeSaveIcon = () => {
-    saved === disabledSaved ? setSaved(activeSaved) : setSaved(disabledSaved)
+    saved === false ? setSaved(true) : setSaved(false)
   };
   return (
     <div className='movies-card'>
@@ -20,10 +17,10 @@ export default function MoviesCard(props) {
         </div>
         <Switch>
           <Route path='/movies'>
-            <img src={saved} className='movies-card__button' alt='сохранить' onClick={changeSaveIcon} />
+            <button className={`movies-card__button ${saved && 'movies-card__button_active'}`} type='button' onClick={changeSaveIcon} />
           </Route>
           <Route path='/saved-movies'>
-            <img src={deleteImg} className='movies-card__button' alt='удалить' onClick={changeSaveIcon} />
+            <button className='movies-card__button movies-card__button_delete' type='button' />
           </Route>
         </Switch>
       </div>
