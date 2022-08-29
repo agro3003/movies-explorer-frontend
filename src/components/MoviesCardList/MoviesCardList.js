@@ -1,21 +1,18 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { Route, Switch } from 'react-router-dom';
-import { cards, savedCard } from '../../images/cards';
 
-export default function MoviesCardList() {
+export default function MoviesCardList({ viewMovies, handleCardDelete, savedMovies, handleSaveMovies, setIsSavedViewMovies }) {
   return (
-    <Switch>
-      <Route path='/movies'>
-      <div className='movies-card-list'>
-        {cards.map((item) => <MoviesCard image={item.image} name={item.nameRU} duration={item.duration} />)}
-      </div>
-    </Route>
-    <Route path='/saved-movies'>
-      <div className='movies-card-list'>
-        {savedCard.map((item) => <MoviesCard image={item.image} name={item.nameRU} duration={item.duration} />)}
-      </div>
-    </Route>
-    </Switch >
+    <section className='movies-card-list'>
+      {viewMovies.map((item) =>
+        <MoviesCard
+          key={item.id ?? item._id}
+          handleCardDelete={handleCardDelete}
+          savedMovies={savedMovies}
+          handleSaveMovies={handleSaveMovies}
+          movie={item}
+          setIsSavedViewMovies={setIsSavedViewMovies}
+        />)}
+    </section>
   )
 }

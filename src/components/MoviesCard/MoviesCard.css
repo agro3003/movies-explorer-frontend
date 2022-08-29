@@ -1,6 +1,7 @@
 .movies-card {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background: #FDFDFD;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
 }
@@ -35,6 +36,20 @@
   border: none;
   cursor: pointer;
   transition: opacity 1s linear;
+}
+
+.movies-card__image-link {
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 1s linear;
+}
+
+.movies-card__image-link:hover {
+  opacity: 0.5;
+}
+
+.movies-card__image {
+  width: 100%;
 }
 
 .movies-card__button:hover {

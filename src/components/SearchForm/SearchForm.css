@@ -30,6 +30,9 @@
   border: none;
   width: 100%;
 }
+.search-form__input:focus {
+outline: none;
+}
 
 .search-form__button {
   padding: 0 30px 0 46px;

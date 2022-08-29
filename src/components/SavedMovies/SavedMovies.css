@@ -4,6 +4,29 @@
   padding: 0 70px 0;
 }
 
+.saved-movies__preloader {
+  display: none;
+}
+
+.saved-movies__preloader_active {
+  display: block;
+}
+
+.saved-movies__not-find {
+  display: none;
+  align-self: center;
+  margin: 0;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+.saved-movies__not-find_active {
+  display: block;
+
+}
+
 .saved-movies__search-form {
   margin: 70px 0 10px;
   padding-bottom: 70px;
