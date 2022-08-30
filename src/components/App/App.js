@@ -95,11 +95,13 @@ function App() {
     localStorage.removeItem('moviessearch');
     localStorage.removeItem('savedmoviessearch');
     setIsSavedViewMovies([]);
+    setSearchMovies([]);
     setSavedMovies([]);
     setViewMovies([]);
     setMovies([]);
     setLoggedIn(false);
     setCurrentUser({});
+    setLoadMoreStatus(false);
     history.push('/');
   }
 

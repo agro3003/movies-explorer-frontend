@@ -41,7 +41,7 @@ export default function MoviesCard({ movie, savedMovies, handleSaveMovies, handl
     <div className='movies-card'>
       <div className='movies-card__top-block'>
         <div>
-          <h2 className='movies-card__name'>{movie.name}</h2>
+          <h2 className='movies-card__name'>{movie.nameRU}</h2>
           <p className='movies-card__duration'>{movie.duration}</p>
         </div>
         <Switch>
