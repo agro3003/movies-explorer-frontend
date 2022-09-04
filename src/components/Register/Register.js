@@ -23,7 +23,7 @@ export default function Register({ onSingUp }) {
         <input name="name" value={values.name || ''}  type="text" onChange={handleChange}  className='register__input' pattern="[A-Za-zА-Яа-яЁё -]{2,30}" required />
         <span className='register__input-error'>{errors.name}</span>
         <span className='register__input-label'>E-mail</span>
-        <input name="email" value={values.email || ''}  type="email" onChange={handleChange}  className='register__input' required />
+        <input name="email" value={values.email || ''}  type="email" onChange={handleChange}  className='register__input' required pattern="([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,})\.([A-z]{2,8})" />
         <span className='register__input-error'>{errors.email}</span>
         <span className='register__input-label'>Пароль</span>
         <input name="password" value={values.password || ''}  type="password" onChange={handleChange}  className='register__input register__input_error' minLength="4" maxLength="32" required />

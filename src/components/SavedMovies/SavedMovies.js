@@ -4,19 +4,14 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 
-export default function SavedMovies({ setCheckboxStatus, setIsSavedViewMovies, addShowCards, checkboxStatus, viewMovies, handleCardDelete, isLoading, isNotFind }) {
-  const [valueSerchMovies, setValueSearchMovies] = React.useState('Фильм');
+export default function SavedMovies({ setCheckboxStatus, setIsSavedViewMovies, addShowCards, checkboxStatus, viewMovies, handleCardDelete, isLoading, isNotFind, savedMovies, loggedIn }) {
+  const [valueSerchMovies, setValueSearchMovies] = React.useState('');
 
   React.useEffect(() => {
-    const localSearch = localStorage.getItem('savedmoviessearch');
-    if (localSearch) {
-      const state = JSON.parse(localSearch);
-      setCheckboxStatus(state.checkboxStatus);
-      setIsSavedViewMovies(state.searchSaved);
-      setValueSearchMovies(state.data);
-    } else {
-      return;
-    }
+    setCheckboxStatus(false);
+    setIsSavedViewMovies(savedMovies);
+    setValueSearchMovies('');
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -30,17 +25,17 @@ export default function SavedMovies({ setCheckboxStatus, setIsSavedViewMovies, a
           setValueSearchMovies={setValueSearchMovies}
         />
       </div>
-      <div className='saved-movies__movies-card-list'>
-        <MoviesCardList
-          viewMovies={viewMovies}
-          handleCardDelete={handleCardDelete}
-          setIsSavedViewMovies={setIsSavedViewMovies}
-        />
-      </div>
-      <div className={`saved-movies__preloader ${isLoading && 'saved-movies__preloader_active'}`}>
-        <Preloader />
-      </div>
-      <p className={`saved-movies__not-find ${isNotFind && 'saved-movies__not-find_active'}`}>По вашему запросу ничего не найдено</p>
+      {isLoading ? <Preloader /> : <>
+        <div className='saved-movies__movies-card-list'>
+          <MoviesCardList
+            viewMovies={viewMovies}
+            handleCardDelete={handleCardDelete}
+            setIsSavedViewMovies={setIsSavedViewMovies}
+          />
+        </div>
+        <p className={`saved-movies__not-find ${isNotFind && 'saved-movies__not-find_active'}`}>По вашему запросу ничего не найдено</p>
+      </>
+      }
     </section>
   )
 }

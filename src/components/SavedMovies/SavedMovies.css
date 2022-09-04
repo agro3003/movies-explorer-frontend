@@ -4,14 +4,6 @@
   padding: 0 70px 0;
 }
 
-.saved-movies__preloader {
-  display: none;
-}
-
-.saved-movies__preloader_active {
-  display: block;
-}
-
 .saved-movies__not-find {
   display: none;
   align-self: center;

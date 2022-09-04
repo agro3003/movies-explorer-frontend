@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import ProtectedRouter from '../ProtectedRoute';
 import Header from '../Header/Header';
@@ -21,28 +21,28 @@ import { getLoadStep, getInitialCount } from '../../utils/getLoadStep';
 function App() {
   const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isInfoTooltip, setIsInfoTooltip] = React.useState({ isOpen: false, text: '' });
+  const [isInfoTooltip, setIsInfoTooltip] = React.useState({ isOpen: false, status: false, text: '' });
   const [currentUser, setCurrentUser] = React.useState({});
+  const location = useLocation();
 
   React.useEffect(() => {
+    const path = location.pathname
     tokenCheck();
+    history.push(path);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleRegister() {
-    history.push('/sign-in');
-  }
 
   function handleSingUp({ name, email, password }) {
     MainApi.register(name, email, password)
-      .then((res) => {
-        handleRegister()
-        return res;
+      .then(() => {
+        handleSignIn(email, password)
+        history.push('/movies');
       })
       .catch((err) => {
         if (err.status === 409) {
-        setIsInfoTooltip({ isOpen: true, text: 'пользователь с таким email уже существует' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'пользователь с таким email уже существует' });
         } else {
-        setIsInfoTooltip({ isOpen: true, text: 'Что то пошло не так, при регистрации' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'Что то пошло не так, при регистрации' });
         }
         console.log(`Ошибка: ${err}`)
       })
@@ -55,7 +55,6 @@ function App() {
       .then((res) => {
         if (!res) return;
         setLoggedIn(true);
-        history.push('/movies');
         setCurrentUser(res);
       })
       .catch((err) => {
@@ -80,9 +79,9 @@ function App() {
       })
       .catch((err) => {
         if (err.status === 400) {
-          setIsInfoTooltip({ isOpen: true, text: 'Неправильная почта или пароль' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'Неправильная почта или пароль' });
         } else {
-          setIsInfoTooltip({ isOpen: true, text: 'что то пошло не так' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'что то пошло не так' });
         }
         console.log(`Ошибка: ${err}`)
       })
@@ -110,19 +109,20 @@ function App() {
     MainApi.updateUserInfo(name, email, token)
       .then(res => {
         setCurrentUser(res);
+        setIsInfoTooltip({ isOpen: true, status: true, text: `пользовательские данные изменены на ${res.name} и ${res.email}` });
       })
       .catch((err) => {
         if (err.status === 409) {
-        setIsInfoTooltip({ isOpen: true, text: 'пользователь с таким email уже существует' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'пользователь с таким email уже существует' });
         } else {
-        setIsInfoTooltip({ isOpen: true, text: 'Что то пошло не так, при регистрации' });
+          setIsInfoTooltip({ isOpen: true, status: false, text: 'Что то пошло не так, при регистрации' });
         }
         console.log(`Ошибка: ${err}`)
       });
   };
 
   const closeInfoTooltip = () => {
-    setIsInfoTooltip({ isOpen: false, text: '' });
+    setIsInfoTooltip({ isOpen: false, status: false, text: '' });
   };
 
   ////////////////////////////////////
@@ -136,10 +136,11 @@ function App() {
   const [isNotFind, setIsNotFind] = React.useState(false);
   const [loadMoreStatus, setLoadMoreStatus] = React.useState(false);
   const [viewMovies, setViewMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState([]);
 
 
   React.useEffect(() => {
-    if(!loggedIn) return;
+    if (!loggedIn) return;
     const localMovies = localStorage.getItem('movies');
     if (localMovies) {
       try {
@@ -151,13 +152,15 @@ function App() {
     } else {
       fetchMovies();
     }
+    // eslint-disable-next-line
   }, [, loggedIn]);
 
   React.useEffect(() => {
-    if(!loggedIn) return;
+    if (!loggedIn) return;
     const localSavedMovies = localStorage.getItem('savedmovies');
     if (localSavedMovies) {
       try {
+        setIsSavedViewMovies(JSON.parse(localSavedMovies));
         setSavedMovies(JSON.parse(localSavedMovies));
       } catch (err) {
         localStorage.removeItem('savedmovies');
@@ -166,6 +169,7 @@ function App() {
     } else {
       featchSavedMovies();
     }
+    // eslint-disable-next-line
   }, [, loggedIn]);
 
   const fetchMovies = () => {
@@ -175,7 +179,7 @@ function App() {
         localStorage.setItem('movies', JSON.stringify(res));
       })
       .catch((err) => {
-        setIsInfoTooltip({ isOpen: true, text: 'Ошибка при загрузке фильмов' });
+        setIsInfoTooltip({ isOpen: true, status: false, text: 'Ошибка при загрузке фильмов' });
         console.log(`Ошибка: ${err}`);
       })
   }
@@ -216,7 +220,7 @@ function App() {
   ///////////////////////////
 
 
-  const [savedMovies, setSavedMovies] = React.useState([]);
+
   const [isSavedViewMovies, setIsSavedViewMovies] = React.useState([]);
 
   const handleSaveMovies = (movie) => {
@@ -228,8 +232,8 @@ function App() {
         localStorage.setItem('savedmovies', JSON.stringify(newSavedMovies));
       })
       .catch((err) => {
-        setIsInfoTooltip({ isOpen: true, text: 'Ошибка при сохранении фильма' });
-        console.log(`Ошибка: ${err}`);      
+        setIsInfoTooltip({ isOpen: true, status: false, text: 'Ошибка при сохранении фильма' });
+        console.log(`Ошибка: ${err}`);
       })
   }
 
@@ -237,12 +241,13 @@ function App() {
     const token = localStorage.getItem('token');
     MainApi.getMovies(token)
       .then(res => {
+        setIsSavedViewMovies(res)
         setSavedMovies(res);
         localStorage.setItem('savedmovies', JSON.stringify(res));
       })
       .catch((err) => {
-        setIsInfoTooltip({ isOpen: true, text: 'Ошибка сервера' });
-        console.log(`Ошибка: ${err}`);        
+        setIsInfoTooltip({ isOpen: true, status: false, text: 'Ошибка сервера' });
+        console.log(`Ошибка: ${err}`);
       })
   }
 
@@ -255,7 +260,7 @@ function App() {
         localStorage.setItem('savedmovies', JSON.stringify(newSavedMovies));
       })
       .catch((err) => {
-        setIsInfoTooltip({ isOpen: true, text: 'Ошибка при удалении лайка' });
+        setIsInfoTooltip({ isOpen: true, status: false, text: 'Ошибка при удалении лайка' });
         console.log(`Ошибка: ${err}`)
       });
   };
@@ -272,19 +277,18 @@ function App() {
     } else {
       setIsNotFind(false);
     }
-    localStorage.setItem('savedmoviessearch', JSON.stringify({ data, checkboxStatus, searchSaved }));
     setIsLoading(false);
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className='app'>
+    <div className='app'>
+      <CurrentUserContext.Provider value={currentUser}>
         <Header loggedIn={loggedIn} />
         <Switch>
-          <Route path='/sign-in'>
+          <Route exact path='/sign-in'>
             <Login onSignIn={handleSignIn} />
           </Route>
-          <Route path='/sign-up'>
+          <Route exact path='/sign-up'>
             <Register onSingUp={handleSingUp} />
           </Route>
           <Route exact path='/'>
@@ -292,7 +296,8 @@ function App() {
           </Route>
           <ProtectedRouter
             component={Movies}
-            exact path='/movies'
+            path='/movies'
+            loggedIn={loggedIn}
             setViewMovies={setViewMovies}
             addShowCards={addShowCards}
             setCheckboxStatus={setCheckboxStatus}
@@ -306,11 +311,11 @@ function App() {
             isNotFind={isNotFind}
             loadMoreStatus={loadMoreStatus}
             handleLoadMore={handleLoadMore}
-            loggedIn={loggedIn}
           />
           <ProtectedRouter
             component={SavedMovies}
-            exact path='/saved-movies'
+            path='/saved-movies'
+            loggedIn={loggedIn}
             checkboxStatus={checkboxStatus}
             setCheckboxStatus={setCheckboxStatus}
             viewMovies={isSavedViewMovies}
@@ -321,19 +326,14 @@ function App() {
             isLoading={isLoading}
             isNotFind={isNotFind}
             setIsNotFind={setIsNotFind}
-            loggedIn={loggedIn}
-
           />
           <ProtectedRouter
             component={Profile}
-            path='/profile'
+            exact path='/profile'
             loggedIn={loggedIn}
             updateUserInfo={handleUpdateUser}
             loggedOut={handleLoggedOut}
           />
-          <Route>
-            {loggedIn ? <Redirect to="/movies" /> : <Redirect exact to="/" />}
-          </Route>
           <Route path='*'>
             <NotFound />
           </Route>
@@ -343,8 +343,8 @@ function App() {
           isInfoTooltip={isInfoTooltip}
           onClose={closeInfoTooltip}
         />
-      </div>
-    </CurrentUserContext.Provider>
+      </CurrentUserContext.Provider>
+    </div>
   );
 }
 

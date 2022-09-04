@@ -4,14 +4,6 @@
   padding: 0 70px 0;
 }
 
-.movies__preloader {
-  display: none;
-}
-
-.movies__preloader_active {
-  display: block;
-}
-
 .movies__not-find {
   display: none;
   margin: 0;

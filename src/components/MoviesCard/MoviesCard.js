@@ -8,6 +8,7 @@ export default function MoviesCard({ movie, savedMovies, handleSaveMovies, handl
   React.useEffect(() => {
     if (window.location.pathname !== '/movies') return;
     setIsSaved(moviesIsSaved(movie.id, savedMovies));
+    // eslint-disable-next-line
   }, []);
 
 

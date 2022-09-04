@@ -68,6 +68,14 @@
   line-height: 16px;
   border: none;
   background-color: #ffffff;
+  width: 100%;
+}
+
+.profile__edit-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .profile__edit_active {
